@@ -9,7 +9,7 @@ import copy
 from tqdm import tqdm
 from openai import OpenAI
 
-os.environ["DASHSCOPE_API_KEY"] = 'sk-fdc1c9908fde4e8496d6e2a501137950'
+os.environ["DASHSCOPE_API_KEY"] = ''
 PROMPT_TEMPLATE = "The beauty item has following attributes: \n name is <TITLE>; brand is <STORE>; price is <PRICE>. \n"
 FEAT_TEMPLATE = "The item has following features: <FEATURES>. \n"
 DESC_TEMPLATE = "The item has following description: <DESCRIPTION>. \n"
