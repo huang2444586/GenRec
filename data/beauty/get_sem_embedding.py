@@ -1,6 +1,8 @@
 import os
 import pickle
 import random
+import time
+import traceback
 import jsonlines
 import pandas as pd
 import numpy as np
@@ -125,19 +127,49 @@ def main():
         item_emb = pickle.load(open(os.path.join(USED_DIR,'item_emb.pkl'), "rb"))
 
     count = 1
-    while 1:    # avoid broken due to internet connection
-        if len(item_emb) == len(item_data):
-            break
+    consecutive_errors = 0
+    max_consecutive_errors = 5
+
+    while len(item_emb) < len(item_data):
         try:
+            processed_items = 0
             for key, value in tqdm(item_data.items()):
                 if key not in item_emb.keys():
                     if len(value) > 4096:
                         value = value[:4096]
                     item_emb[key] = get_response(value)
                     count += 1
-        except:
-            pickle.dump(item_emb, open(os.path.join(USED_DIR,'item_emb.pkl'), "wb"))
-            exit()
+                    processed_items += 1
+                    consecutive_errors = 0  # 重置连续错误计数
+            
+            # 如果所有项目都已处理完成，则退出循环
+            if len(item_emb) == len(item_data):
+                break
+                
+            # 如果本轮没有处理任何新项目，可能存在逻辑问题
+            if processed_items == 0:
+                print("警告：未处理任何新项目，可能存在逻辑问题")
+                break
+                
+        except KeyboardInterrupt:
+            print("用户中断程序执行")
+            break
+        except Exception as e:
+            consecutive_errors += 1
+            print(f"发生异常 (连续错误 {consecutive_errors}/{max_consecutive_errors}): {e}")
+            traceback.print_exc()
+            
+            # 保存当前进度
+            pickle.dump(item_emb, open(os.path.join(USED_DIR, 'item_emb.pkl'), "wb"))
+            
+            if consecutive_errors >= max_consecutive_errors:
+                print("达到最大连续错误次数，程序终止")
+                break
+                
+            # 指数退避策略
+            wait_time = min(2 ** consecutive_errors, 60)  # 最多等待60秒
+            print(f"等待 {wait_time} 秒后重试...")
+            time.sleep(wait_time)
     
     print('item_emb LENGHT:', len(item_emb))
     print('item_data LENGHT:', len(item_data))
