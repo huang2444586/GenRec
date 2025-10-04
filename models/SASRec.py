@@ -3,8 +3,8 @@ import os
 import torch
 import torch.nn as nn
 import pickle
-from BaseModel import BaseSeqModel
-from utils import PointWiseFeedForward
+from models.BaseModel import BaseSeqModel
+from models.utils import PointWiseFeedForward
 
 class SASRec(BaseSeqModel):
     def __init__(self, user_num, item_num, device, args):

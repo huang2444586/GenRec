@@ -3,8 +3,8 @@ import pickle
 import numpy as np
 import torch
 import torch.nn as nn
-from SASRec import SASRec
-from utils import Multi_CrossAttention
+from models.SASRec import SASRec
+from models.utils import Multi_CrossAttention
 
 LOAD_DIR_FUNC = lambda dataset_name: os.path.join('.', 'data', dataset_name, 'handle')
 
