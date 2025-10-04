@@ -42,7 +42,7 @@ class Generator(object):
         user_valid = {}
         user_test = {}
         # assume user/item index starting from 1
-        f = open('./data/%s/handled/%s.txt' % (self.dataset, self.inter_file), 'r')
+        f = open('./data/%s/handle/%s.txt' % (self.dataset, self.inter_file), 'r')
         for line in f:  # use a dict to save all seqeuces of each user
             u, i = line.rstrip().split(' ')
             u = int(u)
