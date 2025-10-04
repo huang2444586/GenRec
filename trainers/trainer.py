@@ -47,7 +47,7 @@ class Trainer(object):
     
     def _create_model(self):
         '''create your model'''
-        if self.args.model_name == "dvrec":
+        if self.args.model_name == "dvsrec":
             self.model = DualViewSRec(self.user_num, self.item_num, self.device, self.args)
         else:
             raise ValueError
