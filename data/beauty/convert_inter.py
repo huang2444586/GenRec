@@ -15,7 +15,7 @@ with open(f"./data/{dataset}/handle/inter_seq.txt", 'r') as f:
         line_data.pop(0)    # delete user_id
         data[user_id] = line_data
 
-with open(f"./data/{dataset}/handled/inter.txt", 'w') as f:
+with open(f"./data/{dataset}/handle/inter.txt", 'w') as f:
     for user, item_list in tqdm(data.items()):
         for item in item_list:
             u = int(user)
