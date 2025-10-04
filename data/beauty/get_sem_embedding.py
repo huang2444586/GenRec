@@ -131,12 +131,13 @@ def main():
         try:
             for key, value in tqdm(item_data.items()):
                 if key not in item_emb.keys():
-                    # if len(value) > 4096:
-                    #     value = value[:4096]
+                    if len(value) > 4096:
+                        value = value[:4096]
                     item_emb[key] = get_response(value)
                     count += 1
         except:
             pickle.dump(item_emb, open(os.path.join(USED_DIR,'item_emb.pkl'), "wb"))
+            exit()
     
     print('item_emb LENGHT:', len(item_emb))
     print('item_data LENGHT:', len(item_data))
