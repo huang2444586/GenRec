@@ -1,14 +1,4 @@
-# here put the import lib
-import os
 import argparse
-import torch
-
-from generators.generator import Seq2SeqGeneratorAllUser
-from generators.generator import GeneratorAllUser
-from trainers.sequence_trainer import SeqTrainer
-from utils.utils import set_seed
-from utils.logger import Logger
-
 
 parser = argparse.ArgumentParser()
 
@@ -255,51 +245,5 @@ parser.add_argument("--log",
                     default=False,
                     action="store_true",
                     help="whether create a new log file")
-
-torch.autograd.set_detect_anomaly(True)
-
-args = parser.parse_args()
-set_seed(args.seed) # fix the random seed
-args.output_dir = os.path.join(args.output_dir, args.dataset)
-args.pretrain_dir = os.path.join(args.output_dir, args.pretrain_dir)
-args.output_dir = os.path.join(args.output_dir, args.model_name)
-args.keepon_path = os.path.join(args.output_dir, args.keepon_path)
-args.output_dir = os.path.join(args.output_dir, args.check_path)    # if check_path is none, then without check_path
-
-
-def main():
-
-    log_manager = Logger(args)  # initialize the log manager
-    logger, writer = log_manager.get_logger()    # get the logger
-    args.now_str = log_manager.get_now_str()
-
-    device = torch.device("cuda:"+str(args.gpu_id) if torch.cuda.is_available()
-                          and not args.no_cuda else "cpu")
-
-
-    os.makedirs(args.output_dir, exist_ok=True)
-
-    # generator is used to manage dataset
-    generator = Seq2SeqGeneratorAllUser(args, logger, device)
-
-    trainer = SeqTrainer(args, logger, writer, device, generator)
-
-    if args.do_test:
-        trainer.test()
-    elif args.do_emb:
-        trainer.save_user_emb()
-    elif args.do_group:
-        trainer.test_group()
-    else:
-        trainer.train()
-
-    log_manager.end_log()   # delete the logger threads
-
-
-
-if __name__ == "__main__":
-
-    main()
-
 
 
