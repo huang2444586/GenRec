@@ -1,4 +1,4 @@
-from parser import parser
+from parse import parser
 import torch
 import os
 from generators.generator import Seq2SeqGeneratorAllUser
