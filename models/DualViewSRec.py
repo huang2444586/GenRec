@@ -20,7 +20,7 @@ class DualViewSRec(SASRec):
 
         # load llm embedding as item embedding
         # llm_item_emb = pickle.load(open(os.path.join("data/"+args.dataset, "pca_itm_emb_np.pkl"), "rb"))
-        llm_item_emb = pickle.load(open(os.path.join(LOAD_DIR_FUNC(args.dataset), "itm_emb_np.pkl"), "rb"))
+        llm_item_emb = pickle.load(open(os.path.join(LOAD_DIR_FUNC(args.dataset), "item_emb_np.pkl"), "rb"))
         llm_item_emb = np.insert(llm_item_emb, 0, values=np.zeros((1, llm_item_emb.shape[1])), axis=0)
         llm_item_emb = np.concatenate([llm_item_emb, np.zeros((1, llm_item_emb.shape[1]))], axis=0)
         self.llm_item_emb = nn.Embedding.from_pretrained(torch.Tensor(llm_item_emb))    
@@ -31,7 +31,7 @@ class DualViewSRec(SASRec):
             nn.Linear(int(llm_item_emb.shape[1] / 2), args.hidden_size)
         )
 
-        id_item_emb = pickle.load(open(os.path.join(LOAD_DIR_FUNC(args.dataset), "pca64_itm_emb_np.pkl"), "rb"))
+        id_item_emb = pickle.load(open(os.path.join(LOAD_DIR_FUNC(args.dataset), "pca64_item_emb_np.pkl"), "rb"))
         id_item_emb = np.insert(id_item_emb, 0, values=np.zeros((1, id_item_emb.shape[1])), axis=0)
         id_item_emb = np.concatenate([id_item_emb, np.zeros((1, id_item_emb.shape[1]))], axis=0)
         self.id_item_emb = nn.Embedding.from_pretrained(torch.Tensor(id_item_emb))    
