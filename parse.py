@@ -247,3 +247,9 @@ parser.add_argument("--log",
                     help="whether create a new log file")
 
 
+parser.add_argument("--stage", 
+                    default=1,
+                    type=int,
+                    help="which stage to run")
+
+

@@ -6,15 +6,12 @@ from trainers.sequence_trainer import SeqTrainer
 from utils.utils import set_seed
 from utils.logger import Logger
 
-def main():
+args = parser.parse_args()
 
-    """
-    Stage 1:
-    """
+def stage_1():
 
     torch.autograd.set_detect_anomaly(True)
 
-    args = parser.parse_args()
     set_seed(args.seed) # fix the random seed
     args.output_dir = os.path.join(args.output_dir, args.dataset)
     args.pretrain_dir = os.path.join(args.output_dir, args.pretrain_dir)
@@ -40,11 +37,16 @@ def main():
 
     log_manager.end_log()   # delete the logger threads
 
-    """
-    Stage 2:
-    """
 
-    
+def main():
+
+    if args.stage == 1:
+        stage_1()
+    # elif args.stage == 2:
+        # stage_2()
+    # else:
+        # stage_3()
+    return
 
 
 
